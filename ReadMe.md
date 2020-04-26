@@ -6,6 +6,8 @@ A Hand sign emoji recognition system which can be used while video calling or on
     - Tensorflow
     - Keras
     - OpenCV
+    - sklearn
+    
     
 ## Future Improvements:
     - Hand gesture can be detected using MediaPipe Framework by Google.
