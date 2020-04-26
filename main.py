@@ -6,6 +6,7 @@ Project: Hand sign emoji Recognition for Video Calling using CNN
 import cv2
 import numpy as np
 from keras.models import load_model
+from utils import overlay_emoji as oe
 
 
 def main() -> None:
@@ -13,6 +14,7 @@ def main() -> None:
     Main function to Run.
     :return: None
     """
+    emoji_path = {0: "images/ok.png", 1: "images/peace.png", 2: "images/shaka.png", 3: "images/Thumbs_Up.png"}
     output = ['ok', 'peace', 'shaka', 'thumbsUp']
     model = load_model("model.h5")
     cap = cv2.VideoCapture(0)
@@ -47,11 +49,15 @@ def main() -> None:
 
         mask1 = mask.reshape([1, 200, 200, 1])
         out = model.predict(mask1)
-        ind = np.argmax(out)
+        ind = int(np.argmax(out))
         cv2.putText(frame, output[ind], (330, 330), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-        # show the windows
-        cv2.imshow('mask', mask)
-        cv2.imshow('frame', frame)
+
+        # Overlay emoji
+        overlay = cv2.imread(emoji_path[ind])
+        overlay = cv2.resize(overlay, (80, 80))
+
+        added_image = oe.overlay_emoji(frame, overlay, y=30, x=30)
+        cv2.imshow('frame', added_image)
 
         k = cv2.waitKey(5) & 0xFF
         if k == ord("q"):
