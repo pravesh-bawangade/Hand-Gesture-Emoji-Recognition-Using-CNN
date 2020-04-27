@@ -21,7 +21,7 @@ def main() -> None:
     cap = cv2.VideoCapture(0)
     while True:
         # (x_s, y_s) = (320,240)
-        x_s, y_s = (640, 480)
+        x_s, y_s = (640, 360)
         width_start, width_size = int(x_s / 6.4), int((x_s / 3.2) + (x_s / 6.4))
 
         ret, frame = cap.read()
@@ -59,10 +59,10 @@ def main() -> None:
                 mask1 = mask.reshape([1, 200, 200, 1])
                 out = model.predict(mask1)
                 ind = int(np.argmax(out))
-                cv2.putText(frame, output[ind], (330, 330), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                cv2.putText(frame, output[ind], (130, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
 
                 # Overlay emoji
-                overlay = cv2.imread(emoji_path[ind])
+                overlay = cv2.imread(emoji_path[ind],-1)
                 overlay = cv2.resize(overlay, (80, 80))
 
                 added_image = oe.overlay_emoji(frame, overlay, y=30, x=30)
